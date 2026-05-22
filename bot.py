@@ -9,7 +9,7 @@ import asyncio, datetime, time
 
 # ⚙️ Configuration Texts
 ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
-START_TEXT = "Hai {}\n\nI am Auto Request Accept Bot With Working For All Channel. Add Me In Your Channel To Use"
+START_TEXT = "Hi {}\n\nI am Auto Message Sender Bot. I Can Be Used To Send Message To Request Channel Invites"
 
 # 🌍 Loading Koyeb Environment Variables
 API_ID = int(env.get('API_ID'))
@@ -31,8 +31,7 @@ async def start_handler(c, m):
     if not await Data.find_one({'id': user_id}): 
         await Data.insert_one({'id': user_id})
     button = [[        
-        InlineKeyboardButton('Updates', url='https://t.me/mkn_bots_updates'),
-        InlineKeyboardButton('Support', url='https://t.me/MKN_BOTZ_DISCUSSION_GROUP')
+        InlineKeyboardButton('Support', url='https://t.me/Moviecrownofficialz')
     ]]
     return await m.reply_text(text=START_TEXT.format(m.from_user.mention), disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup(button))
           
