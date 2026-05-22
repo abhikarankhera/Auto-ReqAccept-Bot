@@ -9,7 +9,7 @@ import asyncio, datetime, time
 
 # ⚙️ Configuration Texts
 ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
-START_TEXT = "✨ **WELCOME TO AUTO-MESSAGE BOT** ✨
+START_TEXT = """✨ **WELCOME TO AUTO-MESSAGE BOT** ✨
 
 Hello {},\n\nWelcome to my personal automated message bot! I am here to provide you high quality content effortlessly.
 
@@ -22,7 +22,7 @@ Hello {},\n\nWelcome to my personal automated message bot! I am here to provide 
 🛠️ **HOW TO USE ME:**
 Just Click On Join To The Links Made By My Owner And I Will Auto Send Content ! 
 
-*Enjoy your stay and happy streaming!* 🍿"
+*Enjoy your stay and happy streaming!* 🍿"""
 
 # 🌍 Loading Koyeb Environment Variables
 API_ID = int(env.get('API_ID'))
