@@ -1,3 +1,5 @@
+import threading
+from web import run_server
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
 from pyrogram import Client, filters
 from pyrogram.types import *
@@ -5,7 +7,19 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from os import environ as env
 import asyncio, datetime, time
 
+if __name__ == "__main__":
+    # 1. Start the HTTP health check server in a background thread
+    print("Starting background health check server...")
+    web_thread = threading.Thread(target=run_server, daemon=True)
+    web_thread.start()
 
+    # 2. Start your existing Telegram Bot Client loop
+    print("Starting Telegram Bot...")
+    # Example for Pyrogram:
+    # app.run() 
+    # Or if you manually start it:
+    # bot.start()
+    # idle()
 ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
 START_TEXT = "Hai {}\n\nI am Auto Request Accept Bot With Working For All Channel. Add Me In Your Channel To Use"
 
