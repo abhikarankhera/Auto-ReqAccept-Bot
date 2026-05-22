@@ -136,8 +136,9 @@ async def req_accept(c, m):
     chat_id = m.chat.id
     chat_title = m.chat.title or "Our Channel"
     
-    # Generate the proper markdown mention for the user
-    user_mention = user.mention
+    # 💎 FIX 1: Generate a custom Markdown mention.
+    # This prevents formatting collisions when we bold the entire message.
+    user_mention = f"[{user.first_name}](tg://user?id={user_id})"
     
     # Save user to Database if not already present
     if not await Data.find_one({'id': user_id}): 
@@ -163,25 +164,22 @@ async def req_accept(c, m):
         print(f"Formatting error: {format_err}")
         formatted_message = raw_message  # Fallback if placeholders are mistyped
 
-    # 💎 FIX: Wrap the entire final message in Markdown bold tags
-    # Pyrogram's user.mention outputs Markdown by default, so wrapping it like this works perfectly.
+    # 💎 FIX 2: Wrap the entire text in asterisks for bolding.
     bold_message = f"**{formatted_message}**"
     
     try: 
         if photo_url and (photo_url.startswith("http://") or photo_url.startswith("https://")):
-            # Sends photo with the text formatted as the caption (explicitly using Markdown)
+            # 💎 FIX 3: Removed 'parse_mode' entirely. Pyrogram uses Markdown by default.
             await c.send_photo(
                 chat_id=user_id, 
                 photo=photo_url, 
-                caption=bold_message, 
-                parse_mode="markdown"
+                caption=bold_message
             )
         else:
-            # Fallback to plain text message if no valid photo link is set in Koyeb
+            # 💎 FIX 3: Removed 'parse_mode' entirely. Pyrogram uses Markdown by default.
             await c.send_message(
                 chat_id=user_id, 
-                text=bold_message, 
-                parse_mode="markdown"
+                text=bold_message
             )
             
         print(f"Successfully sent formatted welcome to {user_id}")
