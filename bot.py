@@ -100,10 +100,9 @@ async def req_accept(c, m):
     # await c.approve_chat_join_request(chat_id, user_id) 
     
     # 🌍 Fetching the message from Koyeb Environment Variables
-    # If 'WELCOME_MSG' isn't found in Koyeb, it falls back to the default text below.
+    # Fixed indentation: shifted inside the function block
     default_text = "Thanks for your request! Click here to visit our sponsor: https://yourlink.com"
-# Change os.getenv to env.get
-promo_message = env.get("WELCOME_MSG", default_text)
+    promo_message = env.get("WELCOME_MSG", default_text)
     
     try: 
         # 🛠️ STEP 2: Sends the dynamically loaded message
