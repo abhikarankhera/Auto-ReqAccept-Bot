@@ -9,6 +9,7 @@ import asyncio, datetime, time
 
 # ⚙️ Configuration Texts
 ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
+
 START_TEXT = """✨ **WELCOME TO AUTO-MESSAGE BOT** ✨
 
 Hello {},\n\nWelcome to my personal automated message bot! I am here to provide you high quality content effortlessly.
@@ -36,17 +37,48 @@ Dbclient = AsyncIOMotorClient(DB_URL)
 Cluster = Dbclient['Cluster0']
 Data = Cluster['users']
 Bot = Client(name='AutoAcceptBot', api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
-       
+
 # 🚀 Handlers Section
+
 @Bot.on_message(filters.command("start") & filters.private)                     
 async def start_handler(c, m):
     user_id = m.from_user.id
+    
+    # Save user to Database if not already present
     if not await Data.find_one({'id': user_id}): 
         await Data.insert_one({'id': user_id})
+        
+    # Inline buttons layout
     button = [[        
-        InlineKeyboardButton('Support', url='https://t.me/Moviecrownofficialz')
+        InlineKeyboardButton('Updates', url='https://t.me/mkn_bots_updates'),
+        InlineKeyboardButton('Support', url='https://t.me/MKN_BOTZ_DISCUSSION_GROUP')
     ]]
-    return await m.reply_text(text=START_TEXT.format(m.from_user.mention), disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup(button))
+    reply_markup = InlineKeyboardMarkup(button)
+    
+    # 🌍 Fetch a dedicated photo URL for the /start command from Koyeb
+    start_photo_url = env.get("START_PHOTO", "")
+    
+    # Format the start text with the user's mention placeholder
+    formatted_start_text = START_TEXT.format(m.from_user.mention)
+    
+    try:
+        # If a valid start image link is present in Koyeb, send it
+        if start_photo_url and (start_photo_url.startswith("http://") or start_photo_url.startswith("https://")):
+            await c.send_photo(
+                chat_id=user_id, 
+                photo=start_photo_url, 
+                caption=formatted_start_text, 
+                reply_markup=reply_markup
+            )
+        else:
+            # Fallback to plain text message if no start image link is set
+            await m.reply_text(
+                text=formatted_start_text, 
+                disable_web_page_preview=True, 
+                reply_markup=reply_markup
+            )
+    except Exception as e:
+        print(f"Error in start handler: {e}")
           
 
 @Bot.on_message(filters.command(["broadcast", "users"]) & filters.user(ADMINS))  
@@ -92,7 +124,6 @@ async def broadcast(c, m):
             
     time_taken = datetime.timedelta(seconds=int(time.time()-start_time))
     await sts.delete()
-    # Fixed the 'message' variable crash here to use 'm'
     await m.reply_text(f"Broadcast Completed:\nCompleted in {time_taken} seconds.\n\nTotal Users {total_users}\nCompleted: {done} / {total_users}\nSuccess: {success}\nFailed: {failed}", quote=True)
 
 
@@ -113,7 +144,7 @@ async def req_accept(c, m):
     if not await Data.find_one({'id': user_id}): 
         await Data.insert_one({'id': user_id})
     
-    # 🛠️ STEP 1: Add a '#' at the front of this line so they stay pending!
+    # 🛠️ STEP 1: Keep this line commented out with '#' so requests stay pending!
     # await c.approve_chat_join_request(chat_id, user_id) 
     
     # 🌍 Fetch the custom message template from Koyeb env variables
@@ -146,7 +177,7 @@ async def req_accept(c, m):
         print(f"Failed to send message to {user_id}: {e}")
 
 
-# 🏁 Execution Core (Moved safely to the bottom)
+# 🏁 Execution Core
 if __name__ == "__main__":
     # 1. Start the HTTP health check server in a background thread
     print("Starting background health check server...")
