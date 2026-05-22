@@ -12,16 +12,16 @@ ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
 
 START_TEXT = """✨ **WELCOME TO AUTO-MESSAGE BOT** ✨
 
-Hello {},\n\nWelcome to my personal automated message bot! I am here to provide you high quality content effortlessly.
+**Hello {}**,\n\n**Welcome to my personal automated message bot! I am here to provide you high quality content effortlessly.**
 
 🚀 **WHAT I CAN DO FOR YOU:**
-🌟 **Provide Content:** Get files, movies, and web series .
-⚡ **High-Speed Links:** Get direct download and streaming links instantly.
-🔔 **Live Updates:** We Broadcast New Movies To You.
+🌟 **Provide Content:** **Get files, movies, and web series** .
+⚡ **High-Speed Links:** **Get direct download and streaming links instantly.**
+🔔 **Live Updates:** **We Broadcast New Movies To You.**
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 🛠️ **HOW TO USE ME:**
-Just Click On Join To The Links Made By My Owner And I Will Auto Send Content ! 
+**Just Click On Join To The Links Made By My Owner And I Will Auto Send Content ! **
 
 *Enjoy your stay and happy streaming!* 🍿"""
 
@@ -50,8 +50,7 @@ async def start_handler(c, m):
         
     # Inline buttons layout
     button = [[        
-        InlineKeyboardButton('Updates', url='https://t.me/mkn_bots_updates'),
-        InlineKeyboardButton('Support', url='https://t.me/MKN_BOTZ_DISCUSSION_GROUP')
+        InlineKeyboardButton('Support', url='https://t.me/Moviecrownofficialz')
     ]]
     reply_markup = InlineKeyboardMarkup(button)
     
