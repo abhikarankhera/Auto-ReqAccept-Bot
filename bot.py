@@ -162,14 +162,27 @@ async def req_accept(c, m):
     except Exception as format_err:
         print(f"Formatting error: {format_err}")
         formatted_message = raw_message  # Fallback if placeholders are mistyped
+
+    # 💎 FIX: Wrap the entire final message in Markdown bold tags
+    # Pyrogram's user.mention outputs Markdown by default, so wrapping it like this works perfectly.
+    bold_message = f"**{formatted_message}**"
     
     try: 
         if photo_url and (photo_url.startswith("http://") or photo_url.startswith("https://")):
-            # Sends photo with the text formatted as the caption
-            await c.send_photo(chat_id=user_id, photo=photo_url, caption=formatted_message)
+            # Sends photo with the text formatted as the caption (explicitly using Markdown)
+            await c.send_photo(
+                chat_id=user_id, 
+                photo=photo_url, 
+                caption=bold_message, 
+                parse_mode="markdown"
+            )
         else:
             # Fallback to plain text message if no valid photo link is set in Koyeb
-            await c.send_message(chat_id=user_id, text=formatted_message)
+            await c.send_message(
+                chat_id=user_id, 
+                text=bold_message, 
+                parse_mode="markdown"
+            )
             
         print(f"Successfully sent formatted welcome to {user_id}")
     except Exception as e: 
