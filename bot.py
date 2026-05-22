@@ -78,10 +78,17 @@ async def broadcast(c, m):
 async def req_accept(c, m):
     user_id = m.from_user.id
     chat_id = m.chat.id
-    if not await Data.find_one({'id': user_id}): await Data.insert_one({'id': user_id})
-    await c.approve_chat_join_request(chat_id, user_id)
-    try: await c.send_message(user_id, ACCEPTED_TEXT.format(user=m.from_user.mention, chat=m.chat.title))
-    except Exception as e: print(e)
+    if not await Data.find_one({'id': user_id}): 
+        await Data.insert_one({'id': user_id})
+    
+    # 🛠️ STEP 1: Add a '#' at the front of this line so they stay pending!
+    # await c.approve_chat_join_request(chat_id, user_id) 
+    
+    try: 
+        # 🛠️ STEP 2: Change this text to your custom marketing/SMM promo text
+        await c.send_message(user_id, "Thanks for your request! Click here to visit our sponsor: https://yourlink.com")
+    except Exception as e: 
+        print(e)
    
    
 
