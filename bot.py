@@ -86,31 +86,55 @@ async def broadcast(c, m):
     await sts.delete()
     await message.reply_text(f"Broadcast Completed:\nCompleted in {time_taken} seconds.\n\nTotal Users {total_users}\nCompleted: {done} / {total_users}\nSuccess: {success}\nFailed: {failed}", quote=True)
 
-  
- 
-@Bot.on_chat_join_request()
+   
+   @Bot.on_chat_join_request()
 async def req_accept(c, m):
-    user_id = m.from_user.id
+    user = m.from_user
+    if not user:
+        return
+
+    user_id = user.id
     chat_id = m.chat.id
+    chat_title = m.chat.title or "Our Channel"
     
+    # Generate the proper markdown mention for the user
+    user_mention = user.mention
+    
+    # Save user to Database if not already present
     if not await Data.find_one({'id': user_id}): 
         await Data.insert_one({'id': user_id})
     
     # 🛠️ STEP 1: Add a '#' at the front of this line so they stay pending!
     # await c.approve_chat_join_request(chat_id, user_id) 
     
-    # 🌍 Fetching the message from Koyeb Environment Variables
-    # Fixed indentation: shifted inside the function block
-    default_text = "Thanks for your request! Click here to visit our sponsor: https://yourlink.com"
-    promo_message = env.get("WELCOME_MSG", default_text)
+    # 🌍 Fetch the custom message template from Koyeb env variables
+    default_text = "Hello {mention}\nWelcome To {title}\n\nYou are Auto Approved!"
+    raw_message = env.get("WELCOME_MSG", default_text)
+    
+    # 🔧 FIX: Converts literal '\n' typed into Koyeb into actual clean line breaks
+    raw_message = raw_message.replace("\\n", "\n")
+    
+    # 🌍 Fetch the optional photo URL from Koyeb env variables
+    photo_url = env.get("WELCOME_PHOTO", "")
+    
+    # Formats the {mention} and {title} dynamically based on who joins
+    try:
+        formatted_message = raw_message.format(mention=user_mention, title=chat_title)
+    except Exception as format_err:
+        print(f"Formatting error: {format_err}")
+        formatted_message = raw_message  # Fallback if placeholders are mistyped
     
     try: 
-        # 🛠️ STEP 2: Sends the dynamically loaded message
-        await c.send_message(user_id, promo_message)
+        if photo_url and (photo_url.startswith("http://") or photo_url.startswith("https://")):
+            # Sends photo with the text formatted as the caption
+            await c.send_photo(chat_id=user_id, photo=photo_url, caption=formatted_message)
+        else:
+            # Fallback to plain text message if no valid photo link is set in Koyeb
+            await c.send_message(chat_id=user_id, text=formatted_message)
+            
+        print(f"Successfully sent formatted welcome to {user_id}")
     except Exception as e: 
         print(f"Failed to send message to {user_id}: {e}")
-   
-   
 
 Bot.run()
 
