@@ -92,17 +92,23 @@ async def broadcast(c, m):
 async def req_accept(c, m):
     user_id = m.from_user.id
     chat_id = m.chat.id
+    
     if not await Data.find_one({'id': user_id}): 
         await Data.insert_one({'id': user_id})
     
     # 🛠️ STEP 1: Add a '#' at the front of this line so they stay pending!
     # await c.approve_chat_join_request(chat_id, user_id) 
     
+    # 🌍 Fetching the message from Koyeb Environment Variables
+    # If 'WELCOME_MSG' isn't found in Koyeb, it falls back to the default text below.
+    default_text = "Thanks for your request! Click here to visit our sponsor: https://yourlink.com"
+    promo_message = os.getenv("WELCOME_MSG", default_text)
+    
     try: 
-        # 🛠️ STEP 2: Change this text to your custom marketing/SMM promo text
-        await c.send_message(user_id, "Thanks for your request! Click here to visit our sponsor: https://yourlink.com")
+        # 🛠️ STEP 2: Sends the dynamically loaded message
+        await c.send_message(user_id, promo_message)
     except Exception as e: 
-        print(e)
+        print(f"Failed to send message to {user_id}: {e}")
    
    
 
