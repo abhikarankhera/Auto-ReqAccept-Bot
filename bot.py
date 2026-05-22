@@ -102,7 +102,8 @@ async def req_accept(c, m):
     # 🌍 Fetching the message from Koyeb Environment Variables
     # If 'WELCOME_MSG' isn't found in Koyeb, it falls back to the default text below.
     default_text = "Thanks for your request! Click here to visit our sponsor: https://yourlink.com"
-    promo_message = os.getenv("WELCOME_MSG", default_text)
+# Change os.getenv to env.get
+promo_message = env.get("WELCOME_MSG", default_text)
     
     try: 
         # 🛠️ STEP 2: Sends the dynamically loaded message
