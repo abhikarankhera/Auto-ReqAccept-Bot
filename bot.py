@@ -1,6 +1,10 @@
+import sys
+import hydrogram
+
+sys.modules["pyrogram"] = hydrogram
 import threading
 from web import run_server
-from hydrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
+from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
 from pyrogram import Client, filters
 from pyrogram.types import *
 from motor.motor_asyncio import AsyncIOMotorClient  
