@@ -17,7 +17,7 @@ This Is A Telegram For Automatically Accept Chat Join Request With Broadcast &am
 `DB_URL` : MongoDB URI For [MongoDB](https://mongodb.com)
 </details>
 
-
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/abhikarankhera/Auto-ReqAccept-Bot)
 <details>
 <summary><b>Deploy On Heroku</b></summary>
 
