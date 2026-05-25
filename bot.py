@@ -1,12 +1,12 @@
 import threading
 from web import run_server
-from hydrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
-from hydrogram import Client, filters
-from hydrogram.types import *
+from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
+from pyrogram import Client, filters
+from pyrogram.types import *
 from motor.motor_asyncio import AsyncIOMotorClient  
 from os import environ as env
 import asyncio, datetime, time
-from hydrogram.enums import ParseMode
+from pyrogram.enums import ParseMode
 # ⚙️ Configuration Texts
 ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
 
@@ -169,14 +169,14 @@ async def req_accept(c, m):
     
     try: 
         if photo_url and (photo_url.startswith("http://") or photo_url.startswith("https://")):
-            # 💎 FIX 3: Removed 'parse_mode' entirely. hydrogram uses Markdown by default.
+            # 💎 FIX 3: Removed 'parse_mode' entirely. pyrogram uses Markdown by default.
             await c.send_photo(
                 chat_id=user_id, 
                 photo=photo_url, 
                 caption=bold_message
             )
         else:
-            # 💎 FIX 3: Removed 'parse_mode' entirely. hydrogram uses Markdown by default.
+            # 💎 FIX 3: Removed 'parse_mode' entirely. pyrogram uses Markdown by default.
             await c.send_message(
                 chat_id=user_id, 
                 text=bold_message
