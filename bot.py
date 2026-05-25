@@ -1,28 +1,26 @@
 import asyncio
 
-# Force an active event loop to exist for Python 3.14 compatibility
+# Keep Python 3.14 loop initialization healthy
 try:
     asyncio.get_running_loop()
 except RuntimeError:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-# --- Your original code continues below ---
-import sys
-import hydrogram
-sys.modules["pyrogram"] = hydrogram
+# Clean, native Hydrogram imports
+from hydrogram import Client, filters
+from hydrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
 
-from hydrogram import Client
 # ... rest of your imports and code
 import threading
 from web import run_server
-from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
-from pyrogram import Client, filters
-from pyrogram.types import *
+from hydrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
+from hydrogram import Client, filters
+from hydrogram.types import *
 from motor.motor_asyncio import AsyncIOMotorClient  
 from os import environ as env
 import asyncio, datetime, time
-from pyrogram.enums import ParseMode
+from hydrogram.enums import ParseMode
 # ⚙️ Configuration Texts
 ACCEPTED_TEXT = "Hey {user}\n\nYour Request For {chat} Is Accepted ✅"
 
