@@ -1,6 +1,6 @@
 import threading
 from web import run_server
-from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
+from hydrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
 from pyrogram import Client, filters
 from pyrogram.types import *
 from motor.motor_asyncio import AsyncIOMotorClient  
