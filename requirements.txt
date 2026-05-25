@@ -1,5 +1,5 @@
 dnspython==2.3.0
-pyrogram==2.0.106
+hydrogram
 tgcrypto==1.2.5
 motor==3.7.1
 pymongo==4.11.1
